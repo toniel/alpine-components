@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-movie" tabindex="-1" x-data="movie" @add-movie.window="addMovie()">
+<div class="modal fade" id="modal-movie" x-data="movie" @add-movie.window="addMovie()">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <select class="form-select" aria-label="Default select example" x-model="form.studio_id">
+                        <select class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id">
                             @foreach ($studios as $studio)
                                 <option value="{{ $studio->id }}">{{ $studio->name }}</option>
                             @endforeach
@@ -81,8 +81,19 @@
                     artists: [],
                 },
                 modalTitle: 'Add Movie',
+                selectStudio:null,
                 addMovie() {
                     $('#modal-movie').modal('show')
+                },
+                init(){
+                    this.selectStudio = $('#studio_id').select2({
+                        dropdownParent: $('#modal-movie'),
+                    });
+                    this.selectStudio.on('select2:select', (e) => {
+                        console.log('select2:select', e)
+                        this.form.studio_id = e.params.data.id
+                    })
+
                 }
 
             }))
