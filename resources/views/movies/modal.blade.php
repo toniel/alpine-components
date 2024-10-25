@@ -41,6 +41,29 @@
                         <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
+                <table class="table">
+                    <tr>
+                        <th>Title</th>
+                        <td><span x-text="form.title"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Synopsis</th>
+                        <td><span x-text="form.synopsis"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Studio</th>
+                        <td><span x-text="form.studio_id"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Year</th>
+                        <td><span x-text="form.year"></span></td>
+                    </tr>
+                    <tr>
+                        <th>Artists</th>
+                        <td><span x-text="form.artists"></span></td>
+                    </tr>
+                </table>
+
             </div>
 
         </div>
