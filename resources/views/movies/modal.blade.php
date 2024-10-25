@@ -17,11 +17,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <select class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id">
-                            @foreach ($studios as $studio)
-                                <option value="{{ $studio->id }}">{{ $studio->name }}</option>
-                            @endforeach
-                        </select>
+                        <x-select2 :options="$studios" class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id" />
+
                     </div>
                     <div class="mb-3">
                         <label for="year" class="form-label">Year</label>
@@ -87,13 +84,6 @@
                     $('#modal-movie').modal('show')
                 },
                 init(){
-                    this.selectStudio = $('#studio_id').select2({
-                        width:'100%',
-                        dropdownParent: $('#modal-movie'),
-                    });
-                    this.selectStudio.on('select2:select', (e) => {
-                        this.form.studio_id = e.params.data.id
-                    })
 
                     this.selectArtists = $('#artists').select2({
                         width:'100%',

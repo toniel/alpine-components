@@ -15,7 +15,7 @@ class MovieController extends Controller
     {
         return view('movies.index',[
             'artists' => Artist::all(),
-            'studios' => Studio::all()
+            'studios' => Studio::get(['id','name'])
         ]);
     }
 
