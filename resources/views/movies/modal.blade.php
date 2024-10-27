@@ -17,7 +17,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <x-select2 :options="$studios" class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id" />
+                        <x-select2 :options="$studios" value="id" label="name" class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id" />
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="movie" class="form-label">Movie</label>
+                        <x-select2 :options="$movies" value="id" label="title" class="form-select" aria-label="Default select example" x-model="form.movie" id="movie" />
 
                     </div>
                     <div class="mb-3">
@@ -26,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="artists" class="form-label">Artists</label>
-                        <x-select2 data-ajax--url="{{ route('api.artists.index') }}" class="form-select" aria-label="Default select example" multiple x-model="form.artists" id="artists" />
+                        <x-select2 value="id" label="name" data-ajax--url="{{ route('api.artists.index') }}" class="form-select" aria-label="Default select example" multiple x-model="form.artists" id="artists" />
 
                     </div>
                     <div class="mb-3 float-end">

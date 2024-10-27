@@ -15,7 +15,21 @@ class MovieController extends Controller
     {
         return view('movies.index',[
             'artists' => Artist::all(),
-            'studios' => Studio::get(['id','name'])
+            'studios' => Studio::get(['id','name']),
+            'movies' => [
+                [
+                    'id'=>1,
+                    'title'=>'The Batman',
+                ],
+                [
+                    'id'=> 2,
+                    'title'=> 'Iron Man',
+                ],
+                [
+                    'id'=> 3,
+                    'title'=> 'The Avengers',
+                ]
+            ],
         ]);
     }
 

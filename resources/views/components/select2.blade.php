@@ -1,6 +1,8 @@
 @props([
     'options' => [],
     'serverSide' => !is_null($attributes->get('data-ajax--url')),
+    'value' => 'value',
+    'label' => 'label',
 ])
 <select x-modelable="model" x-data="{
     select2: null,
@@ -8,16 +10,15 @@
     model: null,
     multiple: @js($attributes->get('multiple')),
     serverSide: @js($serverSide),
+    value: @js($value),
+    label: @js($label),
     clientOptions() {
         this.select2.select2({
             width: '100%',
             multiple: this.multiple,
             dropdownParent: $(this.$refs.select2).parent(),
-            data: this.options.map((option) => {
-                return {
-                    id: option.id,
-                    text: option.name
-                }
+            data: this.options.map((item) => {
+                return { text: item[this.label], id: item[this.value] };
             })
         })
     },
@@ -42,7 +43,7 @@
                     processResults: data => {
                         return {
                             results: data.data.map((item) => {
-                                return { text: item.name, id: item.id };
+                                return { text: item[this.label], id: item[this.value] };
                             }),
                             pagination: {
                                 more: data.current_page < data.last_page,
