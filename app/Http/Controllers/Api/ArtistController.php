@@ -13,7 +13,7 @@ class ArtistController extends Controller
      */
     public function index(Request $request)
     {
-        $artists = Artist::select(['id','name'])->where('name', 'like', '%' . $request->q . '%')->paginate();
+        $artists = Artist::select(['id','name'])->where('name', 'like', '%' . $request->search . '%')->paginate();
         return response()->json($artists);
     }
 
