@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="artists" class="form-label">Artists</label>
-                        <x-select2 :options="$artists" class="form-select" aria-label="Default select example" multiple x-model="form.artists" id="artists" />
+                        <x-select2 data-ajax--url="{{ route('api.artists.index') }}" class="form-select" aria-label="Default select example" multiple x-model="form.artists" id="artists" />
 
                     </div>
                     <div class="mb-3 float-end">
@@ -80,7 +80,7 @@
                 addMovie() {
                     $('#modal-movie').modal('show')
                 },
-                
+
 
             }))
         })
