@@ -6,10 +6,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form @submit.prevent="submit()">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" x-model="form.title">
+                        <input type="text" class="form-control" id="title" :class="{'is-invalid':errors && errors.title}" x-model="form.title">
+                        <template x-if="errors && errors.title">
+                            <span class="invalid-feedback" x-text="errors.title"></span>
+                        </template>
                     </div>
                     <div class="mb-3">
                         <label for="synopsis" class="form-label">Synopsis</label>
@@ -17,14 +20,10 @@
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <x-select2 :options="$studios" value="id" label="name" class="form-select" aria-label="Default select example" x-model="form.studio_id" id="studio_id" />
+                        <x-select2 :options="$studios" multiple  class="form-select"  x-model="form.studio_id" id="studio_id" />
 
                     </div>
-                    <div class="mb-3">
-                        <label for="movie" class="form-label">Movie</label>
-                        <x-select2 :options="$movies" value="id" label="title" class="form-select" aria-label="Default select example" x-model="form.movie" id="movie" />
 
-                    </div>
                     <div class="mb-3">
                         <label for="year" class="form-label">Year</label>
                         <input type="text" class="form-control" id="year" x-model="form.year">
@@ -37,7 +36,7 @@
                     <div class="mb-3 float-end">
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
                 <table class="table">
@@ -75,16 +74,29 @@
                 form: {
                     title: '',
                     synopsis: '',
-                    studio_id: '',
+                    studio_id: [],
                     year: '',
                     artists: [],
+                    _method:'POST',
+                    _token:$('meta[name="csrf-token"]').attr('content')
                 },
+                errors:{},
                 modalTitle: 'Add Movie',
                 selectStudio:null,
                 selectArtists:null,
                 addMovie() {
                     $('#modal-movie').modal('show')
                 },
+                submit() {
+                    axios.post('{{ route('movies.store') }}', this.form).then(res=>{
+
+                    }).catch(e=>{
+                        if(e.response.status==422){
+                            console.log(e.response)
+                            this.errors = e.response.data.errors
+                        }
+                    })
+                }
 
 
             }))
