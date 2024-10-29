@@ -1,4 +1,8 @@
-{{-- @dd($attributes) --}}
+<style>
+    .select2-container--error .select2-selection {
+        border-color: red !important;
+    }
+</style>
 @props([
     'options' => [],
     'serverSide' => !is_null($attributes->get('data-ajax--url')),

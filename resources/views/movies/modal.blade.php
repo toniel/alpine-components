@@ -9,18 +9,26 @@
                 <form @submit.prevent="submit()">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" :class="{'is-invalid':errors && errors.title}" x-model="form.title">
+                        <input type="text" class="form-control" id="title"
+                            :class="{ 'is-invalid': errors && errors.title }" x-model="form.title">
                         <template x-if="errors && errors.title">
                             <span class="invalid-feedback" x-text="errors.title"></span>
                         </template>
                     </div>
                     <div class="mb-3">
                         <label for="synopsis" class="form-label">Synopsis</label>
-                        <textarea class="form-control" id="synopsis" rows="3" x-model="form.synopsis"></textarea>
+                        <textarea class="form-control" id="synopsis" :class="{ 'is-invalid': errors && errors.synopsis }" rows="3"
+                            x-model="form.synopsis"></textarea>
+                        <template x-if="errors && errors.synopsis">
+                            <span class="invalid-feedback" x-text="errors.synopsis"></span>
+                        </template>
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <x-select2 :options="$studios" multiple  class="form-select"  x-model="form.studio_id" id="studio_id" />
+                        <x-select2 :options="$studios" class="form-select" x-model="form.studio_id" id="studio_id" />
+                        <template x-if="errors && errors.studio_id">
+                            <span style="color:#dc3545" class="text-sm" x-text="errors.studio_id"></span>
+                        </template>
 
                     </div>
 
@@ -30,7 +38,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="artists" class="form-label">Artists</label>
-                        <x-select2 value="id" label="name" data-ajax--url="{{ route('api.artists.index') }}" class="form-select" aria-label="Default select example" multiple x-model="form.artists" id="artists" />
+                        <x-select2 value="id" label="name" data-ajax--url="{{ route('api.artists.index') }}"
+                            class="form-select" aria-label="Default select example" multiple x-model="form.artists"
+                            id="artists" />
+                        <template x-if="errors && errors.artists">
+                            <span style="color:#dc3545" class="text-sm" x-text="errors.artists"></span>
+                        </template>
 
                     </div>
                     <div class="mb-3 float-end">
@@ -74,26 +87,61 @@
                 form: {
                     title: '',
                     synopsis: '',
-                    studio_id: [],
+                    studio_id: '',
                     year: '',
                     artists: [],
-                    _method:'POST',
-                    _token:$('meta[name="csrf-token"]').attr('content')
+                    _method: 'POST',
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 },
-                errors:{},
+                errors: {},
                 modalTitle: 'Add Movie',
-                selectStudio:null,
-                selectArtists:null,
+                selectStudio: null,
+                selectArtists: null,
                 addMovie() {
+                    this.resetForm()
                     $('#modal-movie').modal('show')
                 },
                 submit() {
-                    axios.post('{{ route('movies.store') }}', this.form).then(res=>{
+                    axios.post('{{ route('movies.store') }}', this.form).then(res => {
 
-                    }).catch(e=>{
-                        if(e.response.status==422){
+                    }).catch(e => {
+                        if (e.response.status == 422) {
                             console.log(e.response)
                             this.errors = e.response.data.errors
+                        }
+                    })
+                },
+                resetForm() {
+                    this.form.title = ''
+                    this.form.synopsis = ''
+                    this.form.studio_id = ''
+                    this.form.year = ''
+                    this.form.artists = []
+                    this.errors = {}
+                },
+                init() {
+                    this.$watch('errors.studio_id', (val) => {
+                        //    console.log(val)
+                        if (val) {
+
+                            $('#studio_id').next(".select2-container").addClass(
+                                'select2-container--error')
+                        } else {
+                            $('#studio_id').next(".select2-container").removeClass(
+                                'select2-container--error')
+
+                        }
+                    })
+                    this.$watch('errors.artists', (val) => {
+                        //    console.log(val)
+                        if (val) {
+
+                            $('#artists').next(".select2-container").addClass(
+                                'select2-container--error')
+
+                        } else {
+                            $('#artists').next(".select2-container").removeClass(
+                                'select2-container--error')
                         }
                     })
                 }
