@@ -1,8 +1,4 @@
-<style>
-    .select2-container--error .select2-selection {
-        border-color: red !important;
-    }
-</style>
+
 @props([
     'options' => [],
     'serverSide' => !is_null($attributes->get('data-ajax--url')),
@@ -74,8 +70,6 @@
 
         this.select2.on('select2:select', (e) => {
             if (this.multiple) {
-                console.log('e', e.params.data.id)
-                console.log('this.model', this.model)
                 this.model.push(e.params.data.id)
             } else {
 
@@ -85,9 +79,7 @@
 
         this.select2.on('select2:unselect', (e) => {
             if (this.multiple) {
-                console.log('e', e.params.data.id)
-                // this.model.splice(this.model.indexOf(e.params.data.id), 1)
-                this.model = this.model.filter(id => id !== e.params.data.id)
+                this.model = this.model.filter(id => String(id) !== String(e.params.data.id))
             } else {
 
                 this.model = null

@@ -47,7 +47,8 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $movie = Movie::with(['studio','artists'])->find($id);
+         return response()->json($movie, 200);
     }
 
     /**

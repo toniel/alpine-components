@@ -1,4 +1,5 @@
-<div class="modal fade" id="modal-movie" x-data="movie" @add-movie.window="addMovie()" @edit-movie.window="editMovie($event.detail)">
+<div class="modal fade" id="modal-movie" x-data="movie" @add-movie.window="addMovie()"
+    @edit-movie.window="editMovie($event.detail)">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,7 +28,7 @@
                         <label for="studio_id" class="form-label">Studio</label>
                         <x-select2 :options="$studios" class="form-select" x-model="form.studio_id" id="studio_id" />
                         <template x-if="errors && errors.studio_id">
-                            <span  class="small text-danger" x-text="errors.studio_id"></span>
+                            <span class="small text-danger" x-text="errors.studio_id"></span>
                         </template>
 
                     </div>
@@ -42,7 +43,7 @@
                             class="form-select" aria-label="Default select example" multiple x-model="form.artists"
                             id="artists" />
                         <template x-if="errors && errors.artists">
-                            <span  class="small text-danger" x-text="errors.artists"></span>
+                            <span class="small text-danger" x-text="errors.artists"></span>
                         </template>
 
                     </div>
@@ -97,26 +98,21 @@
                 modalTitle: 'Add Movie',
                 selectStudio: null,
                 selectArtists: null,
-                studios:@js($studios),
+                studios: @js($studios),
                 addMovie() {
                     this.resetForm()
                     $('#modal-movie').modal('show')
                 },
                 editMovie(movie) {
-                    console.log('movie', movie)
-                    this.modalTitle = 'Edit Movie'
-                    this.form = movie
-                    $('#modal-movie').modal('show')
 
-                    let selectedStudios = this.studios.map(s => {
-                        return {
-                            id: s.id,
-                            text: s.name,
-                            selected: s.id == movie.studio_id
-                        }
+                    this.modalTitle = 'Edit Movie'
+                    $('#modal-movie').modal('show')
+                    axios.get(route('movies.show', movie.id)).then(res => {
+                       console.log(res.data)
                     })
-                    let studioOption = new Option(selectedStudios)
-                    $('#studio_id').append(studioOption).trigger('change' )
+
+
+
                 },
                 submit() {
                     axios.post('{{ route('movies.store') }}', this.form).then(res => {
@@ -129,6 +125,7 @@
                     })
                 },
                 resetForm() {
+                    this.modalTitle = 'Add Movie'
                     this.form.title = ''
                     this.form.synopsis = ''
                     this.form.studio_id = ''
@@ -141,11 +138,9 @@
                         //    console.log(val)
                         if (val) {
 
-                            $('#studio_id').next(".select2-container").addClass(
-                                'select2-container--error')
+                            $('#studio_id').next(".select2-container").find('.select2-selection').addClass('border border-danger')
                         } else {
-                            $('#studio_id').next(".select2-container").removeClass(
-                                'select2-container--error')
+                            $('#studio_id').next(".select2-container").find('.select2-selection').removeClass('border border-danger')
 
                         }
                     })
@@ -153,12 +148,10 @@
                         //    console.log(val)
                         if (val) {
 
-                            $('#artists').next(".select2-container").addClass(
-                                'select2-container--error')
+                            $('#artists').next(".select2-container").find('.select2-selection').addClass('border border-danger')
 
                         } else {
-                            $('#artists').next(".select2-container").removeClass(
-                                'select2-container--error')
+                            $('#artists').next(".select2-container").find('.select2-selection').removeClass('border border-danger')
                         }
                     })
                 }
