@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ArtistMovie extends Model
+class ArtistMovie extends Pivot
 {
     /** @use HasFactory<\Database\Factories\ArtistMovieFactory> */
     use HasFactory;
@@ -13,5 +14,6 @@ class ArtistMovie extends Model
         'artist_id',
         'movie_id',
     ];
-    protected $incrementing = false;
+    public $table = 'artist_movies';
+    public $incrementing = false;
 }

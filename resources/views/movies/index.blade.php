@@ -11,7 +11,34 @@
                 <div class="card-header">{{ __('Movies') }}</div>
 
                 <div class="card-body">
-
+                <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Title </th>
+                                <th>Studio</th>
+                                <th>Year Published</th>
+                                <th>Artists</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($movies as $movie)
+                                <tr>
+                                    <td>{{ $movie->title }}</td>
+                                    <td>{{ $movie->studio?->name }}</td>
+                                    <td>{{ $movie->year }}</td>
+                                    <td>
+                                        @foreach ($movie->artists as $artist)
+                                            {{ $artist->name }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning btn-sm" x-data @click="$dispatch('edit-movie', {{ json_encode($movie) }})">Edit</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

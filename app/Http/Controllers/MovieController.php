@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use App\Models\Artist;
 use App\Models\Studio;
 use Illuminate\Http\Request;
@@ -14,22 +15,8 @@ class MovieController extends Controller
     public function index()
     {
         return view('movies.index',[
-            'artists' => Artist::all(),
             'studios' => Studio::get(['id','name']),
-            'movies' => [
-                [
-                    'id'=>1,
-                    'title'=>'The Batman',
-                ],
-                [
-                    'id'=> 2,
-                    'title'=> 'Iron Man',
-                ],
-                [
-                    'id'=> 3,
-                    'title'=> 'The Avengers',
-                ]
-            ],
+            'movies' => Movie::with(['studio','artists'])->get(),
         ]);
     }
 

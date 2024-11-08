@@ -21,6 +21,6 @@ class Artist extends Model
      */
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany(Movie::class)->using(ArtistMovie::class);
+        return $this->belongsToMany(Movie::class, 'artist_movies')->using(ArtistMovie::class);
     }
 }
