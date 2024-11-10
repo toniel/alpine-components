@@ -15,10 +15,7 @@ class MovieController extends Controller
     public function index()
     {
         return view('movies.index',[
-            'studios' => Studio::get(['id','name'])->map(fn($studio)=>[
-                'value' => $studio->id,
-                'label' => $studio->name
-            ]),
+            'studios' => Studio::get(['id','name']),
             'movies' => Movie::with(['studio','artists'])->get(),
         ]);
     }

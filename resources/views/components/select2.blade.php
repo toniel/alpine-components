@@ -25,17 +25,7 @@
             })
         })
     },
-    setSelectedOptions(selectedOptions) {
-        if (this.serverSide){
-            this.select2.empty()
-            this.preselectedOptions = selectedOptions
-            this.preselectedOptions.forEach((option) => {
-                var option = new Option(option.label, option.value, true, true);
-                this.select2.append(option).trigger('change');
-            })
-        }
 
-    },
     serverOptions() {
         console.log('serverOptions',)
         this.select2.select2({
@@ -68,9 +58,6 @@
             }
         });
 
-        if (this.preselectedOptions.length > 0  ) {
-            this.setSelectedOptions(this.preselectedOptions)
-        }
 
 
     },
@@ -104,6 +91,6 @@
             }
         })
     }
-}"  x-modelable="model" {{ $attributes }}  x-ref="select2" @preselect-select2.window="setSelectedOptions($event.detail)">
+}"  x-modelable="model" {{ $attributes }}  x-ref="select2">
 
 </select>

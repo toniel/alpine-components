@@ -39,7 +39,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="artists" class="form-label">Artists</label>
-                        <x-select2  data-ajax--url="{{ route('api.artists.index') }}"
+
+                        <x-select2 value="id" label="name" data-ajax--url="{{ route('api.artists.index') }}"
                             class="form-select" aria-label="Default select example" multiple x-model="form.artists"
                             id="artists" />
                         <template x-if="errors && errors.artists">
@@ -108,27 +109,6 @@
                     this.modalTitle = 'Edit Movie'
                     $('#modal-movie').modal('show')
                     axios.get(route('movies.show', movie.id)).then(res => {
-                       console.log(res.data)
-                       this.form.title = res.data.title
-                       this.form.synopsis = res.data.synopsis
-                       this.form.studio_id = res.data.studio_id
-                       this.form.year = res.data.year
-
-
-                        $('#studio_id').val(this.form.studio_id).trigger('change')
-
-                        let preselectedArtists = res.data.artists.map(artist=>{
-                            return {
-                                value:artist.id,
-                                label:artist.name
-                            }
-                        })
-
-
-                        this.$dispatch('preselect-select2', preselectedArtists)
-
-
-                        this.form.artists = res.data.artists.map(artist=>artist.id)
 
                     })
 
