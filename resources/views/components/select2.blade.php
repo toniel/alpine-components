@@ -1,4 +1,3 @@
-
 @props([
     'options' => [],
     'serverSide' => !is_null($attributes->get('data-ajax--url')),
@@ -14,6 +13,7 @@
     value: @js($value),
     label: @js($label),
     select2: null,
+    preselectedOptions:[],
     clientOptions() {
         this.select2.select2({
             width: '100%',
@@ -21,11 +21,23 @@
             dropdownParent: $(this.$refs.select2).parent(),
             data: this.options.map((item) => {
                 console.log('item', item[this.label])
-                return { text: item.name, id: item.id };
+                return { text: item[this.label], id: item[this.value] };
             })
         })
     },
+    setSelectedOptions(selectedOptions) {
+        if (this.serverSide){
+            this.select2.empty()
+            this.preselectedOptions = selectedOptions
+            this.preselectedOptions.forEach((option) => {
+                var option = new Option(option.label, option.value, true, true);
+                this.select2.append(option).trigger('change');
+            })
+        }
+
+    },
     serverOptions() {
+        console.log('serverOptions',)
         this.select2.select2({
             width: '100%',
             multiple: this.multiple,
@@ -55,6 +67,12 @@
                 cache: true
             }
         });
+
+        if (this.preselectedOptions.length > 0  ) {
+            this.setSelectedOptions(this.preselectedOptions)
+        }
+
+
     },
     init() {
         this.select2 = $(this.$refs.select2)
@@ -86,6 +104,6 @@
             }
         })
     }
-}"  x-modelable="model" {{ $attributes }}  x-ref="select2">
+}"  x-modelable="model" {{ $attributes }}  x-ref="select2" @preselect-select2.window="setSelectedOptions($event.detail)">
 
 </select>

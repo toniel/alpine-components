@@ -14,6 +14,13 @@ class ArtistController extends Controller
     public function index(Request $request)
     {
         $artists = Artist::select(['id','name'])->where('name', 'like', '%' . $request->q . '%')->paginate();
+
+        $artists->getCollection()->transform(function ($artist) {
+            return [
+                'value' => $artist->id,
+                'label' => $artist->name,
+            ];
+        });
         return response()->json($artists);
     }
 
