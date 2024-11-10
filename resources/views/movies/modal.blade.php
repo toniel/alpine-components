@@ -20,7 +20,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="studio_id" class="form-label">Studio</label>
-                        <x-select2 :options="$studios" multiple  class="form-select"  x-model="form.studio_id" id="studio_id" />
+                        <x-select2 :options="$studios" value="id" label="name"  class="form-select"  x-model="form.studio_id" id="studio_id" />
 
                     </div>
 
@@ -74,7 +74,7 @@
                 form: {
                     title: '',
                     synopsis: '',
-                    studio_id: [],
+                    studio_id: '',
                     year: '',
                     artists: [],
                     _method:'POST',

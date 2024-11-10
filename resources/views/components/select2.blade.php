@@ -21,7 +21,7 @@
             dropdownParent: $(this.$refs.select2).parent(),
             data: this.options.map((item) => {
                 console.log('item', item[this.label])
-                return { text: item.name, id: item.id };
+                return { text: item[this.label], id: item[this.value] };
             })
         })
     },
